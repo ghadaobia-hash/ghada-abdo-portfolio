@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#062B4F"/>
+      <stop offset="100%" stop-color="#0a2340"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#sky)"/>
+  <g stroke="rgba(246,197,109,0.2)" stroke-width="1">
+    <line x1="0" y1="120" x2="800" y2="120"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="280" x2="800" y2="280"/>
+  </g>
+  <path d="M120 280 L380 180 L720 200 L520 260 L480 320 L360 260 Z" fill="rgba(246,197,109,0.15)" stroke="#F6C56D" stroke-width="1.5"/>
+  <circle cx="640" cy="140" r="50" stroke="#F6C56D" stroke-width="1.5" fill="rgba(246,197,109,0.05)"/>
+  <text x="400" y="420" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-family="system-ui,sans-serif" font-size="18">Aviation � CNS</text>
+</svg>

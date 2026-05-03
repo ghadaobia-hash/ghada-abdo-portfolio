@@ -1,0 +1,360 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  isolation: isolate;
+  overflow: hidden;
+  background: #020d18;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(246, 197, 109, 0.22);
+  box-shadow:
+    0 8px 32px rgba(3, 26, 46, 0.45),
+    inset 0 1px 0 rgba(255, 217, 138, 0.06);
+}
+
+.adminStrip {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0.3rem 1.25rem;
+  font-size: 0.72rem;
+  background: rgba(246, 197, 109, 0.1);
+  border-bottom: 1px solid rgba(246, 197, 109, 0.18);
+}
+
+.adminLabel {
+  margin-right: auto;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.adminLink,
+.adminLogout {
+  font: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  color: #e2e8f0;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.15rem 0;
+}
+
+.adminLink:hover,
+.adminLogout:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.adminMeta {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: min(320px, 40vw);
+  line-height: 1.35;
+}
+
+.adminSave {
+  font: inherit;
+  font-size: inherit;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 197, 109, 0.45);
+  background: rgba(246, 197, 109, 0.15);
+  color: var(--gold);
+  cursor: pointer;
+}
+
+.adminSave:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.adminSave:not(:disabled):hover {
+  background: rgba(246, 197, 109, 0.28);
+  color: #fff;
+}
+
+.waveBackdrop {
+  position: absolute;
+  inset: -40% -15% 0 -15%;
+  top: -65%;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.waveBackdrop::after {
+  content: '';
+  position: absolute;
+  inset: 45% 0 0 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(2, 13, 24, 0.25) 45%, rgba(2, 13, 24, 0.75) 100%);
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.adminCorner {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(246, 197, 109, 0.85);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.35rem 0.25rem;
+  margin-right: 0.15rem;
+}
+
+.adminCorner:hover {
+  color: #fff;
+}
+
+@media (max-width: 420px) {
+  .adminCorner {
+    font-size: 0.62rem;
+    padding: 0.25rem 0.1rem;
+  }
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  padding: 0;
+}
+
+.brandMark {
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+  transform: rotate(45deg);
+  box-shadow: 0 0 14px rgba(246, 197, 109, 0.5);
+}
+
+.brandText {
+  white-space: nowrap;
+}
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .nav {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+
+  .nav::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .nav::-webkit-scrollbar-thumb {
+    background: rgba(246, 197, 109, 0.35);
+    border-radius: 999px;
+  }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 0.2rem;
+}
+
+@media (min-width: 900px) and (max-width: 1320px) {
+  .link {
+    font-size: 0.68rem;
+    padding: 0.45rem 0.42rem;
+  }
+}
+
+.link {
+  position: relative;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.45rem 0.55rem;
+  border-radius: 999px;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: #fff;
+}
+
+.active {
+  color: #fff;
+  background: rgba(246, 197, 109, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(246, 197, 109, 0.32) inset,
+    0 4px 22px rgba(246, 197, 109, 0.12);
+}
+
+.underline {
+  display: none;
+}
+
+.menuBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(246, 197, 109, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (min-width: 900px) {
+  .menuBtn {
+    display: none;
+  }
+}
+
+.burger {
+  width: 20px;
+  height: 2px;
+  background: var(--gold);
+  position: relative;
+  transition: background 0.2s;
+}
+
+.burger::before,
+.burger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gold);
+  transition: transform 0.25s ease;
+}
+
+.burger::before {
+  top: -6px;
+}
+
+.burger::after {
+  top: 6px;
+}
+
+.burgerOpen {
+  background: transparent;
+}
+
+.burgerOpen::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.burgerOpen::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.mobile {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-top: 1px solid rgba(246, 197, 109, 0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(11, 53, 88, 0.94) 0%,
+    rgba(6, 43, 79, 0.97) 45%,
+    rgba(3, 26, 46, 0.98) 100%
+  );
+  backdrop-filter: blur(8px);
+}
+
+.mobileList {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobileLink {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  padding: 0.75rem 0.75rem;
+  border-radius: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+.mobileLink:hover {
+  color: var(--gold);
+}
+
+.mobileLinkActive {
+  background: rgba(246, 197, 109, 0.12);
+  color: #fff;
+  border-bottom-color: transparent;
+}

@@ -1,0 +1,43 @@
+.host {
+  position: relative;
+}
+
+.editBtn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 30;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 197, 109, 0.55);
+  background: rgba(5, 22, 34, 0.92);
+  color: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.editBtn:hover {
+  background: rgba(246, 197, 109, 0.12);
+}
+
+/* Hero sits under fixed navbar; keep edit control visible */
+.host[data-section='hero'] .editBtn {
+  top: clamp(5.75rem, 14vw, 8.75rem);
+  z-index: 110;
+}
+
+@media (max-width: 640px) {
+  .editBtn {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .host[data-section='hero'] .editBtn {
+    top: 5.25rem;
+  }
+}

@@ -1,0 +1,132 @@
+.section {
+  padding: 5rem 1.5rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border-top: 1px solid rgba(6, 43, 79, 0.06);
+}
+
+.sectionAlt {
+  background: #ffffff;
+  border-top: 1px solid rgba(6, 43, 79, 0.06);
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 900px) {
+  .columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.columnTitle {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem;
+  color: var(--navy-deep);
+  letter-spacing: -0.02em;
+  padding-bottom: 0.65rem;
+  border-bottom: 2px solid rgba(246, 197, 109, 0.5);
+  display: inline-block;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold) 0%, rgba(246, 197, 109, 0.15) 100%);
+}
+
+.item {
+  position: relative;
+  padding-left: 2rem;
+  padding-bottom: 1.75rem;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.itemMotion {
+  display: contents;
+}
+
+.node {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+  box-shadow: 0 0 0 4px rgba(246, 197, 109, 0.25);
+  z-index: 1;
+}
+
+.content {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid rgba(6, 43, 79, 0.07);
+  box-shadow: 0 4px 12px rgba(6, 43, 79, 0.04);
+}
+
+.period {
+  margin: 0 0 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.itemTitle {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  color: var(--navy-deep);
+  line-height: 1.3;
+}
+
+.org {
+  margin: 0 0 0.65rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-body);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.bullets li {
+  margin-bottom: 0.35rem;
+}
+
+.bullets li:last-child {
+  margin-bottom: 0;
+}

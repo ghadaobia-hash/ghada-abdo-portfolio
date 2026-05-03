@@ -1,0 +1,251 @@
+.section {
+  padding: 5rem 1.5rem;
+  background: #fff;
+}
+
+.coursesSection {
+  padding: 5rem 1.5rem;
+  background: linear-gradient(180deg, #f1f5f9 0%, #f8fafc 100%);
+  border-top: 1px solid rgba(6, 43, 79, 0.06);
+}
+
+.certificatesSection {
+  padding: 5rem 1.5rem;
+  background: #fff;
+  border-top: 1px solid rgba(6, 43, 79, 0.06);
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.subheading {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--navy-deep);
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(246, 197, 109, 0.45);
+  display: inline-block;
+}
+
+.subheadingSpaced {
+  margin-top: 2.75rem;
+}
+
+.courseGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .courseGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.courseCard {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border: 1px solid rgba(6, 43, 79, 0.08);
+  height: 100%;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.courseCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(246, 197, 109, 0.35);
+  box-shadow: 0 12px 28px -16px rgba(6, 43, 79, 0.15);
+}
+
+.courseMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.courseProvider {
+  color: var(--navy-mid);
+}
+
+.courseDate {
+  color: var(--gold-dark);
+}
+
+.courseTitle {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.65rem;
+  color: var(--navy-deep);
+  line-height: 1.35;
+}
+
+.courseList {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-body);
+}
+
+.courseList li {
+  margin-bottom: 0.35rem;
+}
+
+.courseList li:last-child {
+  margin-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border-radius: 16px;
+  padding: 1.15rem 1.15rem 1.25rem;
+  border: 1px solid rgba(6, 43, 79, 0.06);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(246, 197, 109, 0.35);
+  box-shadow: 0 16px 32px -20px rgba(6, 43, 79, 0.2);
+}
+
+.thumbBtn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.thumbBtn:disabled {
+  cursor: default;
+}
+
+.thumbImg {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.thumb {
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--navy) 0%, #0b3558 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbInner {
+  position: relative;
+  width: 70%;
+  height: 55%;
+  border: 1px dashed rgba(246, 197, 109, 0.35);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.seal {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 20px rgba(246, 197, 109, 0.25);
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lines::before,
+.lines::after {
+  content: '';
+  width: 64px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+  color: var(--navy-deep);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.provider {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.date {
+  margin: 0.45rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.note {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-body);
+  font-style: italic;
+}

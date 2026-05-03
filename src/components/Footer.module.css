@@ -1,0 +1,61 @@
+.footer {
+  background: #031728;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 2rem 1.5rem;
+  border-top: 1px solid rgba(246, 197, 109, 0.12);
+}
+
+.inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.mark {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.75rem;
+}
+
+.links button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.links button:hover {
+  color: var(--gold);
+}
+
+.copy {
+  margin: 0;
+  font-size: 0.78rem;
+  max-width: 42ch;
+  line-height: 1.5;
+}

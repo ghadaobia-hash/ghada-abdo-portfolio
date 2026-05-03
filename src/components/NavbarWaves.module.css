@@ -1,0 +1,74 @@
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 5.5rem;
+}
+
+.driftSlow {
+  animation: navWaveDriftA 22s ease-in-out infinite alternate;
+}
+
+.driftMid {
+  animation: navWaveDriftB 18s ease-in-out infinite alternate;
+}
+
+.driftFast {
+  animation: navWaveDriftC 14s ease-in-out infinite alternate;
+}
+
+@keyframes navWaveDriftA {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(-18px) translateY(2px);
+  }
+}
+
+@keyframes navWaveDriftB {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(14px) translateY(-3px);
+  }
+}
+
+@keyframes navWaveDriftC {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10px) translateY(4px);
+  }
+}
+
+.goldPulse {
+  transform-origin: 72% 18%;
+  animation: navGoldBreath 10s ease-in-out infinite alternate;
+}
+
+@keyframes navGoldBreath {
+  0% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.06) translate(4px, -2px);
+  }
+}
+
+.ridgeLine {
+  animation: navRidge 16s ease-in-out infinite alternate;
+}
+
+@keyframes navRidge {
+  0% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
