@@ -116,11 +116,10 @@
 .adminCorner {
   flex-shrink: 0;
   font: inherit;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(246, 197, 109, 0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f6c26b;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -128,14 +127,28 @@
   margin-right: 0.15rem;
 }
 
-.adminCorner:hover {
+.adminCorner:hover,
+.adminCorner:focus-visible {
   color: #fff;
+}
+
+.adminCornerIcon {
+  width: 1.75rem;
+  height: auto;
+  display: block;
+}
+
+.adminCornerIcon path {
+  fill: currentColor;
 }
 
 @media (max-width: 420px) {
   .adminCorner {
-    font-size: 0.62rem;
     padding: 0.25rem 0.1rem;
+  }
+
+  .adminCornerIcon {
+    width: 1.52rem;
   }
 }
 

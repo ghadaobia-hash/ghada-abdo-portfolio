@@ -77,7 +77,7 @@ export function Hero() {
 
             <h1 className={styles.name}>{personal.name}</h1>
             <p className={styles.title}>{personal.title}</p>
-            <p className={styles.intro}>{personal.tagline}</p>
+            {personal.tagline?.trim() ? <p className={styles.intro}>{personal.tagline}</p> : null}
 
             {heroChips.length > 0 ? (
               <ul className={styles.heroChips} aria-label="Skill areas">
@@ -93,7 +93,7 @@ export function Hero() {
               <button
                 type="button"
                 className={styles.btnPrimary}
-                onClick={() => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 {personal.heroCtaPrimary?.trim() || 'View My Work'}
               </button>
@@ -102,19 +102,13 @@ export function Hero() {
                 className={styles.btnGhost}
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                {personal.heroCtaSecondary?.trim() || "Let's Connect"}
+                {personal.heroCtaSecondary?.trim() || 'Contact Me'}
               </button>
               {cvUrl ? (
                 <a className={styles.btnCv} href={cvUrl} download={cvName}>
                   {personal.heroCvButtonLabel?.trim() || 'Download CV'}
                 </a>
               ) : null}
-            </div>
-
-            <div className={styles.floatingLabel}>
-              <span className={styles.badgeDot} aria-hidden />
-              <span className={styles.labelAccent}>{personal.awardBadgeLabel || 'DEPI'}</span>
-              <span>{personal.awardBadgeLine || 'Best Project Award · 2025'}</span>
             </div>
           </motion.div>
         </div>

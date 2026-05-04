@@ -69,31 +69,88 @@ export function siteDataToAppData(raw) {
   if (Array.isArray(sd.skills)) base.skillGroups = sd.skills;
   if (Array.isArray(sd.courses)) base.courses = sd.courses;
   if (Array.isArray(sd.achievements)) base.achievements = sd.achievements;
-  if (Array.isArray(sd.navLinks)) base.navLinks = sd.navLinks;
+  if (Array.isArray(sd.navLinks)) {
+    base.navLinks = sd.navLinks.filter((l) => l && l.id !== 'achievements');
+  }
 
   if (Array.isArray(sd.projects)) {
-    base.projects = sd.projects.map((p) => ({
-      ...p,
-      coverImageId: null,
-      coverImageUrl: p.coverImageUrl || null,
-      coverImageDataUrl: p.coverImageBase64 || p.coverImageDataUrl || null,
-      files: (p.files || []).map((f) => ({
-        name: f.name || 'file',
-        mime: f.mime || 'application/octet-stream',
-        dataUrl: f.base64 || f.dataUrl || null,
-        url: f.url || null,
-        fileId: null,
-      })),
-    }));
+    base.projects = sd.projects.map((p) => {
+      const screenshots = Array.isArray(p.screenshots)
+        ? p.screenshots.map((s, idx) => ({
+            id: s.id || `scr-${p.id}-${idx}`,
+            imageUrl: s.imageUrl || null,
+            imageDataUrl: s.imageBase64 || s.imageDataUrl || null,
+          }))
+        : [];
+      const websiteRaw = pick(p.websiteUrl, p.projectWebsiteUrl, p.demoUrl, '');
+      const visitRaw =
+        typeof p.visitWebsite === 'string' && p.visitWebsite.trim()
+          ? p.visitWebsite.trim()
+          : typeof p.visitWebsiteLabel === 'string' && p.visitWebsiteLabel.trim()
+            ? p.visitWebsiteLabel.trim()
+            : '';
+      return {
+        ...p,
+        coverImageId: null,
+        coverImageUrl: p.coverImageUrl || null,
+        coverImageDataUrl: p.coverImageBase64 || p.coverImageDataUrl || null,
+        websiteUrl: websiteRaw || null,
+        projectWebsiteUrl: websiteRaw || null,
+        visitWebsite: visitRaw || 'Visit Website',
+        visitWebsiteLabel: visitRaw || 'Visit Website',
+        screenshots,
+        demoUrl: null,
+        files: (p.files || []).map((f) => ({
+          name: f.name || 'file',
+          mime: f.mime || 'application/octet-stream',
+          dataUrl: f.base64 || f.dataUrl || null,
+          url: f.url || null,
+          fileId: null,
+        })),
+      };
+    });
+  }
+
+  /** Replace unmigrated sample trio with current default two-project list (safe: exact IDs only). */
+  const LEGACY_TRIO_IDS = ['aviation-cns', 'depi-dotnet', 'gis-analysis'];
+  if (Array.isArray(base.projects) && base.projects.length === LEGACY_TRIO_IDS.length) {
+    const idsSig = [...base.projects.map((p) => p?.id).filter(Boolean)].sort().join('|');
+    if (idsSig === [...LEGACY_TRIO_IDS].sort().join('|')) {
+      base.projects = JSON.parse(JSON.stringify(cloneDefaultSiteData().projects));
+    }
   }
 
   if (Array.isArray(sd.certificates)) {
-    base.certificates = sd.certificates.map((cert) => ({
-      ...cert,
-      imageId: null,
-      imageUrl: cert.imageUrl || null,
-      imageDataUrl: cert.imageBase64 || cert.imageDataUrl || null,
-    }));
+    const removedCertIds = new Set(['cert-12', 'cert-13', 'cert-14']);
+    base.certificates = sd.certificates
+      .filter((c) => c && !removedCertIds.has(c.id))
+      .map((cert) => ({
+        ...cert,
+        imageId: null,
+        imageUrl: cert.imageUrl || null,
+        imageDataUrl: cert.imageBase64 || cert.imageDataUrl || null,
+      }));
+  }
+
+  const legacyHeroTagline =
+    'Final-year Aviation & Information Systems student with a strong interest in air navigation, CNS technologies, and modern aviation systems. I also build clean, responsive web applications that combine technical knowledge with creative digital solutions.';
+  if (typeof base.personal.tagline === 'string' && base.personal.tagline.trim() === legacyHeroTagline) {
+    base.personal.tagline = '';
+  }
+
+  const webAboutSuffix =
+    ' I also build clean, responsive web applications that combine technical knowledge with creative digital solutions.';
+  const legacyAboutLastPara = `I am eager to contribute to aviation technology environments – particularly in air navigation services, CNS systems, and flight operations – where I can apply both my aviation knowledge and technical skills to enhance safety and operational efficiency.`;
+  if (Array.isArray(base.about?.paragraphs) && base.about.paragraphs.length > 0) {
+    const i = base.about.paragraphs.length - 1;
+    const last = base.about.paragraphs[i];
+    if (typeof last === 'string' && !last.includes('I also build clean, responsive web')) {
+      if (last === legacyAboutLastPara) {
+        base.about.paragraphs[i] = legacyAboutLastPara + webAboutSuffix;
+      } else if (last.trimEnd().endsWith('operational efficiency.')) {
+        base.about.paragraphs[i] = `${last.trimEnd()}${webAboutSuffix}`;
+      }
+    }
   }
 
   return base;
@@ -161,6 +218,8 @@ export function appDataToSiteData(d) {
     skills: JSON.parse(JSON.stringify(d.skillGroups || [])),
     projects: (d.projects || []).map((proj) => {
       const cov = mediaField(proj.coverImageUrl, proj.coverImageDataUrl);
+      const wUrl = proj.websiteUrl || proj.demoUrl || null;
+      const vVisit = proj.visitWebsiteLabel?.trim() || 'Visit Website';
       return {
         id: proj.id,
         title: proj.title,
@@ -169,10 +228,18 @@ export function appDataToSiteData(d) {
         image: proj.image,
         badge: proj.badge,
         tech: [...(proj.tech || [])],
-        demoUrl: proj.demoUrl,
+        projectWebsiteUrl: wUrl,
+        visitWebsite: vVisit,
+        websiteUrl: wUrl,
+        visitWebsiteLabel: vVisit,
+        demoUrl: wUrl,
         codeUrl: proj.codeUrl,
         coverImageUrl: cov.url,
         coverImageBase64: cov.data,
+        screenshots: (proj.screenshots || []).map((s, idx) => {
+          const im = mediaField(s.imageUrl, s.imageDataUrl);
+          return { id: s.id || `scr-${proj.id}-${idx}`, imageUrl: im.url, imageBase64: im.data };
+        }),
         files: (proj.files || []).map((f) => {
           const fd = mediaField(f.url, f.dataUrl);
           return {

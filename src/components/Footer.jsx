@@ -39,9 +39,6 @@ export function Footer() {
           <button type="button" onClick={() => scrollTo('certificates')}>
             Certificates
           </button>
-          <button type="button" onClick={() => scrollTo('achievements')}>
-            Achievements
-          </button>
           <button type="button" onClick={() => scrollTo('contact')}>
             Contact
           </button>

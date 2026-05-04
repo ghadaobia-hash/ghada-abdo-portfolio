@@ -2,9 +2,24 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { useSiteData } from '../context/SiteDataContext';
+import { isSupabaseConfigured } from '../supabaseClient';
 import { AdminPasswordModal } from './AdminPasswordModal';
 import { NavbarWaves } from './NavbarWaves';
 import styles from './Navbar.module.css';
+
+function AdminAirplaneGlyph({ className }) {
+  /* Side-profile jet silhouette: fuselage, swept wing, vertical stabilizer */
+  return (
+    <svg className={className} viewBox="0 0 76 34" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M4 17C4 13 12 12 44 11C58 10.5 66 12 68 16C68 19 64 21 52 21H32L24 28C22 30 18 30 17 27L16 24H12C6 24 4 21 4 17Z"
+      />
+      <path fill="currentColor" d="M28 16H52L62 30C58 31 50 28 40 22L30 18Z" />
+      <path fill="currentColor" d="M62 13L71 13L69 17L61 16Z" />
+    </svg>
+  );
+}
 
 export function Navbar() {
   const { isAdmin, logout } = useAdminAuth();
@@ -53,7 +68,11 @@ export function Navbar() {
         <div className={styles.adminStrip}>
           <span className={styles.adminLabel}>Edit mode</span>
           <span className={styles.adminMeta}>
-            {persistenceMode === 'firebase' ? 'Cloud (Firebase)' : 'Local only — set VITE_FIREBASE_* for shared hosting'}
+            {persistenceMode === 'firebase'
+              ? `Cloud (Firebase)${isSupabaseConfigured() ? ' · images: about / projects / certificates → Supabase' : ''}`
+              : isSupabaseConfigured()
+                ? 'Local — Save uploads about, project & certificate images to Supabase Storage'
+                : 'Local only — set VITE_FIREBASE_* for shared hosting or VITE_SUPABASE_* for image CDN'}
           </span>
           <button type="button" className={styles.adminSave} disabled={saving} onClick={onSaveAll}>
             {saving ? 'Saving…' : 'Save'}
@@ -68,8 +87,13 @@ export function Navbar() {
       </div>
       <div className={styles.inner}>
         {!isAdmin ? (
-          <button type="button" className={styles.adminCorner} onClick={onAdminClick}>
-            Admin
+          <button
+            type="button"
+            className={styles.adminCorner}
+            onClick={onAdminClick}
+            aria-label="Site admin login"
+          >
+            <AdminAirplaneGlyph className={styles.adminCornerIcon} />
           </button>
         ) : null}
         <button type="button" className={styles.brand} onClick={() => scrollTo('home')}>

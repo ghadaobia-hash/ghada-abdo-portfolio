@@ -45,8 +45,6 @@ export function SectionEditModal({ section, open, onClose }) {
           phone: p.phone,
           linkedin: p.linkedin,
           location: p.location,
-          awardBadgeLabel: p.awardBadgeLabel,
-          awardBadgeLine: p.awardBadgeLine,
           contactLead: p.contactLead,
           profileImageUrl: p.profileImageUrl,
           heroIllustrationUrl: p.heroIllustrationUrl,
@@ -65,7 +63,6 @@ export function SectionEditModal({ section, open, onClose }) {
       if (section === 'experience') setJsonText(JSON.stringify(data.experience || [], null, 2));
       if (section === 'skills') setJsonText(JSON.stringify(data.skillGroups || [], null, 2));
       if (section === 'courses') setJsonText(JSON.stringify(data.courses || [], null, 2));
-      if (section === 'achievements') setJsonText(JSON.stringify(data.achievements || [], null, 2));
       if (section === 'projects') setProjects(JSON.parse(JSON.stringify(data.projects || [])));
       if (section === 'certificates') setCerts(JSON.parse(JSON.stringify(data.certificates || [])));
       if (section === 'contact') {
@@ -109,6 +106,8 @@ export function SectionEditModal({ section, open, onClose }) {
       replaceData((d) => {
         Object.assign(d.personal, {
           ...hero,
+          awardBadgeLabel: '',
+          awardBadgeLine: '',
           profileImageDataUrl,
           heroIllustrationDataUrl,
           cvDataUrl,
@@ -253,7 +252,7 @@ export function SectionEditModal({ section, open, onClose }) {
               <span className={styles.label}>Secondary hero button</span>
               <input
                 className={styles.input}
-                placeholder={"Let's Connect"}
+                placeholder="Contact Me"
                 value={hero.heroCtaSecondary}
                 onChange={(e) => setHero({ ...hero, heroCtaSecondary: e.target.value })}
               />
@@ -293,14 +292,6 @@ export function SectionEditModal({ section, open, onClose }) {
             <div className={styles.field}>
               <span className={styles.label}>Contact lead (also editable in Contact)</span>
               <textarea className={styles.textarea} rows={2} value={hero.contactLead} onChange={(e) => setHero({ ...hero, contactLead: e.target.value })} />
-            </div>
-            <div className={styles.field}>
-              <span className={styles.label}>Award badge label</span>
-              <input className={styles.input} value={hero.awardBadgeLabel} onChange={(e) => setHero({ ...hero, awardBadgeLabel: e.target.value })} />
-            </div>
-            <div className={styles.field}>
-              <span className={styles.label}>Award badge line</span>
-              <input className={styles.input} value={hero.awardBadgeLine} onChange={(e) => setHero({ ...hero, awardBadgeLine: e.target.value })} />
             </div>
             <div className={styles.field}>
               <span className={styles.label}>Hero portrait photo (optional)</span>
@@ -426,9 +417,6 @@ export function SectionEditModal({ section, open, onClose }) {
         {section === 'courses' ? (
           <JsonEditor jsonText={jsonText} setJsonText={setJsonText} hint="Array of { id, title, provider, date, points: string[] }" onSave={() => saveJson('courses')} onClose={onClose} />
         ) : null}
-        {section === 'achievements' ? (
-          <JsonEditor jsonText={jsonText} setJsonText={setJsonText} hint="Array of { id, title, org, date, detail }" onSave={() => saveJson('achievements')} onClose={onClose} />
-        ) : null}
 
         {section === 'projects' ? (
           <ProjectsEditor projects={projects} setProjects={setProjects} onSave={saveProjects} onClose={onClose} setErr={setErr} />
@@ -526,6 +514,24 @@ function ProjectsEditor({ projects, setProjects, onSave, onClose, setErr }) {
     }
   };
 
+  const addScreenshots = async (i, fileList) => {
+    const files = fileList ? Array.from(fileList) : [];
+    if (!files.length) return;
+    try {
+      const n = [...projects];
+      const list = [...(n[i].screenshots || [])];
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) continue;
+        const url = await fileToDataUrl(file);
+        list.push({ id: crypto.randomUUID(), imageUrl: null, imageDataUrl: url });
+      }
+      n[i] = { ...n[i], screenshots: list };
+      setProjects(n);
+    } catch {
+      setErr('Screenshot upload failed.');
+    }
+  };
+
   const addFile = async (i, file) => {
     if (!file) return;
     try {
@@ -584,11 +590,18 @@ function ProjectsEditor({ projects, setProjects, onSave, onClose, setErr }) {
           </div>
           <div className={styles.field}>
             <span className={styles.label}>Type</span>
-            <select className={styles.select} value={p.projectType || 'Website'} onChange={(e) => {
-              const n = [...projects];
-              n[pi] = { ...n[pi], projectType: e.target.value };
-              setProjects(n);
-            }}>
+            <select
+              className={styles.select}
+              value={p.projectType || 'Website'}
+              onChange={(e) => {
+                const n = [...projects];
+                n[pi] = { ...n[pi], projectType: e.target.value };
+                setProjects(n);
+              }}
+            >
+              {p.projectType && !PROJECT_TYPES.includes(p.projectType) ? (
+                <option value={p.projectType}>{p.projectType}</option>
+              ) : null}
               {PROJECT_TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t}
@@ -621,12 +634,35 @@ function ProjectsEditor({ projects, setProjects, onSave, onClose, setErr }) {
             }} />
           </div>
           <div className={styles.field}>
-            <span className={styles.label}>Demo URL</span>
-            <input className={styles.input} value={p.demoUrl || ''} onChange={(e) => {
-              const n = [...projects];
-              n[pi] = { ...n[pi], demoUrl: e.target.value || null };
-              setProjects(n);
-            }} />
+            <span className={styles.label}>Project Website URL</span>
+            <input
+              className={styles.input}
+              name="projectWebsiteUrl"
+              placeholder="https://..."
+              value={p.websiteUrl ?? p.projectWebsiteUrl ?? p.demoUrl ?? ''}
+              onChange={(e) => {
+                const n = [...projects];
+                const v = e.target.value.trim();
+                n[pi] = { ...n[pi], websiteUrl: v || null, projectWebsiteUrl: v || null, demoUrl: null };
+                setProjects(n);
+              }}
+            />
+          </div>
+          <div className={styles.field}>
+            <span className={styles.label}>Visit Website</span>
+            <input
+              className={styles.input}
+              name="visitWebsite"
+              placeholder="Visit Website"
+              value={(p.visitWebsiteLabel ?? p.visitWebsite) ?? ''}
+              onChange={(e) => {
+                const n = [...projects];
+                const t = e.target.value;
+                n[pi] = { ...n[pi], visitWebsiteLabel: t, visitWebsite: t };
+                setProjects(n);
+              }}
+            />
+            <p className={styles.dragHint}>Label for the button on the project card (shown when a website URL is set).</p>
           </div>
           <div className={styles.field}>
             <span className={styles.label}>Code URL</span>
@@ -636,6 +672,33 @@ function ProjectsEditor({ projects, setProjects, onSave, onClose, setErr }) {
               setProjects(n);
             }} />
           </div>
+          <div className={styles.field}>
+            <span className={styles.label}>Screenshots / gallery (multiple images)</span>
+            <p className={styles.dragHint}>
+              Images upload to the Supabase bucket <code>projects</code> when you Save from the top bar (same as cover). They appear as a carousel on the card together with the cover.
+            </p>
+            <input type="file" accept="image/*" multiple onChange={(e) => addScreenshots(pi, e.target.files)} />
+          </div>
+          {(p.screenshots || []).length ? (
+            <ul className={styles.dragHint} style={{ margin: '0.5rem 0 0', paddingLeft: '1.25rem' }}>
+              {(p.screenshots || []).map((s, si) => (
+                <li key={s.id || si} style={{ marginBottom: '0.35rem' }}>
+                  Screenshot {si + 1}{' '}
+                  <button
+                    type="button"
+                    className={styles.btnSm}
+                    onClick={() => {
+                      const n = [...projects];
+                      n[pi] = { ...n[pi], screenshots: n[pi].screenshots.filter((_, j) => j !== si) };
+                      setProjects(n);
+                    }}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <div className={styles.field}>
             <span className={styles.label}>Cover image file</span>
             <input type="file" accept="image/*" onChange={(e) => addCover(pi, e.target.files?.[0])} />
@@ -665,24 +728,35 @@ function ProjectsEditor({ projects, setProjects, onSave, onClose, setErr }) {
           </button>
         </div>
       ))}
-      <button type="button" className={styles.btnSm} onClick={() => setProjects([
-        ...projects,
-        {
-          id: crypto.randomUUID(),
-          title: 'New project',
-          description: '',
-          projectType: 'Website',
-          image: '/project-dotnet.svg',
-          coverImageId: null,
-          coverImageUrl: null,
-          coverImageDataUrl: null,
-          tech: [],
-          demoUrl: null,
-          codeUrl: null,
-          badge: null,
-          files: [],
-        },
-      ])}>
+      <button
+        type="button"
+        className={styles.btnSm}
+        onClick={() =>
+          setProjects([
+            ...projects,
+            {
+              id: crypto.randomUUID(),
+              title: 'New project',
+              description: '',
+              projectType: 'Website',
+              image: null,
+              coverImageId: null,
+              coverImageUrl: null,
+              coverImageDataUrl: null,
+              tech: [],
+              websiteUrl: null,
+              projectWebsiteUrl: null,
+              visitWebsite: 'Visit Website',
+              visitWebsiteLabel: 'Visit Website',
+              demoUrl: null,
+              codeUrl: null,
+              badge: null,
+              files: [],
+              screenshots: [],
+            },
+          ])
+        }
+      >
         Add project
       </button>
       <div className={styles.row}>

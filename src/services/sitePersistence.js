@@ -1,6 +1,7 @@
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { getFirebaseStorage, isFirebaseConfigured } from './firebaseClient';
+import { resolveSupabaseSectionMedia } from './supabaseImageUploads';
 
 export const FIRESTORE_COLLECTION = 'siteContent';
 export const FIRESTORE_DOC_ID = 'public';
@@ -47,13 +48,19 @@ function isDataUrl(s) {
 }
 
 /**
- * Uploads all embedded data: URLs to Firebase Storage and sets *Url fields.
- * When Firebase Storage is not configured, returns a deep clone unchanged (local-only dev).
+ * Resolves embedded data: URLs into hosted URLs before persisting:
+ * - About section image, project covers, certificate images → Supabase buckets `about`, `projects`,
+ *   `certificates` when `VITE_SUPABASE_*` is set; otherwise Firebase (if configured) handles them too.
+ * - Hero/profile/CV/QR and project attachment files → Firebase Storage when configured.
+ * If neither backend is configured, data URLs remain (local previews only).
  * @param {object} appData — same shape as in-memory portfolio data
  */
 export async function resolveSiteMediaUploads(appData) {
-  const storage = getFirebaseStorage();
   const out = JSON.parse(JSON.stringify(appData));
+
+  await resolveSupabaseSectionMedia(out);
+
+  const storage = getFirebaseStorage();
   if (!storage) return out;
 
   async function uploadDataUrl(dataUrl, hint) {
@@ -94,6 +101,14 @@ export async function resolveSiteMediaUploads(appData) {
       proj.coverImageUrl = await uploadDataUrl(proj.coverImageDataUrl, `cover_${proj.id}`);
       proj.coverImageDataUrl = null;
     }
+    const shots = proj.screenshots || [];
+    for (let si = 0; si < shots.length; si += 1) {
+      const shot = shots[si];
+      if (shot && isDataUrl(shot.imageDataUrl)) {
+        shot.imageUrl = await uploadDataUrl(shot.imageDataUrl, `gallery_${proj.id}_${si}`);
+        shot.imageDataUrl = null;
+      }
+    }
     const files = proj.files || [];
     for (let i = 0; i < files.length; i += 1) {
       const f = files[i];
@@ -115,5 +130,6 @@ export async function resolveSiteMediaUploads(appData) {
 }
 
 export function persistenceMode() {
-  return isFirebaseConfigured() ? 'firebase' : 'localStorage';
+  if (isFirebaseConfigured()) return 'firebase';
+  return 'localStorage';
 }

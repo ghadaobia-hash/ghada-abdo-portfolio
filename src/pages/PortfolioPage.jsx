@@ -7,7 +7,6 @@ import { Skills } from '../components/Skills';
 import { Projects } from '../components/Projects';
 import { Courses } from '../components/Courses';
 import { Certificates } from '../components/Certificates';
-import { Achievements } from '../components/Achievements';
 import { Contact } from '../components/Contact';
 import { Footer } from '../components/Footer';
 import { EditableSection } from '../components/EditableSection';
@@ -56,9 +55,6 @@ export function PortfolioPage() {
         </EditableSection>
         <EditableSection section="certificates">
           <Certificates />
-        </EditableSection>
-        <EditableSection section="achievements">
-          <Achievements />
         </EditableSection>
         <EditableSection section="contact">
           <Contact />

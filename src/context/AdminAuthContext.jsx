@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-export const ADMIN_PASSWORD = 'GhadaAdmin2026';
+export const ADMIN_PASSWORD = 'ghada2026';
 
 /** Session-only: never visible to “visitors” in another browser unless they know the password. */
 export const SESSION_EDITOR_KEY = 'portfolio_editor_unlocked';
